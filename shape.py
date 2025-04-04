@@ -1,13 +1,15 @@
 import pygame
 
 class Object3d:
-    def __init__(self, vertices: list[list[float]], edges: list[list[int]], faces: list[list[int]], pos: list[float], face_colors=None):
+    def __init__(self, vertices: list[list[float]], edges: list[list[int]], faces: list[list[int]], pos: list[float], 
+                 face_colors=None, opacity=64):
         self.vertices = vertices
         self.edges = edges
         self.faces = faces
         self.pos = pos
         self.face_colors = face_colors if face_colors else [(255, 0, 0), (0, 255, 0), (0, 0, 255), 
                                                             (255, 255, 0), (255, 0, 255), (0, 255, 255)]
+        self.opacity = opacity
 
     def draw(self, surface: pygame.Surface) -> None:
         halfWidth = surface.get_width() / 2
@@ -24,7 +26,7 @@ class Object3d:
         for face_idx, _ in face_depths:
             face = self.faces[face_idx]
             color = self.face_colors[face_idx % len(self.face_colors)]
-            color_with_alpha = (*color, 64)
+            color_with_alpha = (*color, self.opacity)
             
             points_2d = []
             for vertex_idx in face:
@@ -54,5 +56,5 @@ class Cube(Object3d):
     edges: list[list[int]] = []
     faces: list[list[int]] = []
     
-    def __init__(self, pos: list[float], face_colors=None) -> None: 
-        super().__init__(Cube.vertices, Cube.edges, Cube.faces, pos, face_colors)
+    def __init__(self, pos: list[float], face_colors=None, opacity=64) -> None: 
+        super().__init__(Cube.vertices, Cube.edges, Cube.faces, pos, face_colors, opacity)

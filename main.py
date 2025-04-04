@@ -5,6 +5,7 @@ from drawpoly import *
 pygame.init()
 screen = pygame.display.set_mode((1000, 1000))
 running = True
+clock = pygame.time.Clock()
 #endinit
 
 face_colors = [
@@ -16,7 +17,7 @@ face_colors = [
     (0, 255, 255)
 ]
 
-cube = shape.Cube([0, 0, 150], face_colors)
+cube = shape.Cube([0, 0, 200], face_colors, 128)
 
 cube.vertices = [
     [-1, -1, -1],
@@ -43,21 +44,22 @@ cube.faces = [
     [3, 0, 4, 7]]
 
 vel = 1
-TICKS = 0
-
+TICKS=0
 
 while running:   
     for event in pygame.event.get():
         if event.type == pygame.QUIT: running = False
-        if event.type == pygame.KEYDOWN: print(pygame.key.name(event.key))
+        # if event.type == pygame.KEYDOWN: print(pygame.key.name(event.key))
     pygame.draw.rect(screen,hex2rgb("000000"),(0,0,1000,1000))
     cube.draw(screen)
-    pygame.display.flip()
     keys = pygame.key.get_pressed()
     cube.pos = [
         cube.pos[0]+(keys[pygame.K_LEFT] - keys[pygame.K_RIGHT]) * vel,
         cube.pos[1]+(keys[pygame.K_LSHIFT] - keys[pygame.K_LCTRL]) * vel,
         cube.pos[2]+(keys[pygame.K_DOWN] - keys[pygame.K_UP]) * vel
     ]
+    clock.tick()
     TICKS+=1
+    print(clock.get_fps())
+    pygame.display.flip()
 pygame.quit()
